@@ -1,0 +1,19 @@
+/vendor/
+/node_modules/
+/public/storage
+/storage/*.key
+.env
+.env.*
+/bootstrap/cache/*.php
+
+# IDE/editor
+/.vscode/
+/.idea/
+/.nbproject/
+
+# Logs
+/storage/logs/*
+/npm-debug.log
+/yarn-error.log
+.phpunit.result.cache
+
