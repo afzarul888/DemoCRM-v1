@@ -1,0 +1,20 @@
+name: DemoCRM CI/CD
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to Laravel server via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: 192.168.10.152
+          username: copytrading
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            /usr/local/bin/deploy-democrm.sh
+
