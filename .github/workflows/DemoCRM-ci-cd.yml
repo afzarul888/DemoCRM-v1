@@ -3,7 +3,7 @@ name: DemoCRM CI/CD
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   deploy:
@@ -13,29 +13,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup SSH
-        shell: bash
-        run: |
-          set -e
-          mkdir -p ~/.ssh
-          printf "%s\n" "${{ secrets.SSH_KEY }}" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts || true
-          ssh-keyscan -H github.com >> ~/.ssh/known_hosts || true
-
-      - name: Test SSH Connection
-        run: |
-          ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no \
-          ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "echo SSH_OK"
-
       - name: Deploy DemoCRM via SSH
-  uses: appleboy/ssh-action@v1.2.0
-  with:
-    host: ${{ secrets.SSH_HOST }}
-    username: ${{ secrets.SSH_USER }}
-    key: ${{ secrets.SSH_KEY }}
-    port: 22
-    script: |
-      cd /var/www/Laravel_Projects/DemoCRM-v1
-      git pull origin master
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          script: |
+            cd /var/www/Laravel_Projects/DemoCRM-v1
+            git pull origin master
 
